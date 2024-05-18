@@ -1,5 +1,9 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const userRoutes = require("./routes/users");
+
+const app = express();
+app.use(express.json());
 
 // Connection DB
 const PASSWORD = "BkVCTVeYl40E0jXh";
@@ -9,17 +13,13 @@ const DB_URL = `mongodb+srv://${USER}:${PASSWORD}@cluster0.3e1lccc.mongodb.net/?
 async function connect() {
   try {
     await mongoose.connect(DB_URL);
-    console.log("Connecté à la base de données");
+    console.log("Connexion à MangoDB réussie !");
   } catch (e) {
     console.error(e);
   }
 }
 connect();
 module.exports = {};
-
-const app = express();
-
-app.use(express.json());
 
 // Gestion erreurs CORS
 app.use((req, res, next) => {
@@ -34,5 +34,8 @@ app.use((req, res, next) => {
   );
   next();
 });
+
+// Routes
+app.use("/api/auth", userRoutes);
 
 module.exports = app;
