@@ -6,7 +6,7 @@ const emailRegex =
   /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/;
 const passwordRegex = /^(?=.*[A-Z])(?=.*\d).{8,}$/;
 
-// POST => Création de compte
+// Création de compte
 exports.signup = (req, res, next) => {
   if (
     !emailRegex.test(req.body.email) ||
@@ -31,7 +31,7 @@ exports.signup = (req, res, next) => {
     .catch((error) => res.status(500).json({ error }));
 };
 
-// POST => Connexion
+// Connexion
 exports.login = (req, res, next) => {
   User.findOne({ email: req.body.email })
     .then((user) => {
