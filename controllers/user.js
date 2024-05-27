@@ -1,6 +1,7 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const User = require("../models/user");
+require("dotenv").config();
 
 const emailRegex =
   /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/;
@@ -17,7 +18,7 @@ exports.signup = (req, res, next) => {
     });
   }
   bcrypt
-    .hash(req.body.password, 10)
+    .hash(req.body.password, parseInt(process.env.BCRYPT_SALT_ROUNDS))
     .then((hash) => {
       const user = new User({
         email: req.body.email,
@@ -46,8 +47,8 @@ exports.login = (req, res, next) => {
           }
           res.status(200).json({
             userId: user._id,
-            token: jwt.sign({ userId: user._id }, "RANDOM_TOKEN_SECRET", {
-              expiresIn: "24h",
+            token: jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
+              expiresIn: process.env.JWT_EXPIRATION,
             }),
           });
         })

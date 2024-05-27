@@ -13,7 +13,17 @@ const bookSchema = mongoose.Schema({
       grade: { type: Number },
     },
   ],
-  averageRating: { type: Number },
+  averageRating: { type: Number, default: 0 },
+});
+
+bookSchema.pre("save", function (next) {
+  if (this.isModified("ratings")) {
+    const ratings = this.ratings.map((rating) => rating.grade);
+    const sumOfRatings = ratings.reduce((acc, curr) => acc + curr, 0);
+    this.averageRating =
+      ratings.length > 0 ? Math.round(sumOfRatings / ratings.length) : 0;
+  }
+  next();
 });
 
 module.exports = mongoose.model("Book", bookSchema);

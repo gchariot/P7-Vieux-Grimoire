@@ -1,14 +1,17 @@
+require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const userRoutes = require("./routes/users");
+const bookRoutes = require("./routes/books");
 
 const app = express();
 app.use(express.json());
 
 // Connection DB
-const PASSWORD = "BkVCTVeYl40E0jXh";
-const USER = "gchariot";
-const DB_URL = `mongodb+srv://${USER}:${PASSWORD}@cluster0.3e1lccc.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
+const USER = process.env.DB_USER;
+const PASSWORD = process.env.DB_PASSWORD;
+const DB_CLUSTER = process.env.DB_CLUSTER;
+const DB_URL = `mongodb+srv://${USER}:${PASSWORD}@${DB_CLUSTER}/?retryWrites=true&w=majority&appName=Cluster0`;
 
 async function connect() {
   try {
@@ -37,5 +40,9 @@ app.use((req, res, next) => {
 
 // Routes
 app.use("/api/auth", userRoutes);
+app.use("/api/books", bookRoutes);
+
+const path = require("path");
+app.use("/images", express.static(path.join(__dirname, "images")));
 
 module.exports = app;

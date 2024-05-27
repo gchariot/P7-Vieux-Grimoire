@@ -10,7 +10,6 @@ const compressImage = async (req, res, next) => {
         .webp({ quality: 50 })
         .toFile(`images/${newFilename}`);
 
-      fs.unlinkSync(req.file.path);
       req.file.path = `images/${newFilename}`;
       req.file.filename = newFilename;
       req.file.mimetype = "image/webp";
