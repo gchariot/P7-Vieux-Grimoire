@@ -28,12 +28,14 @@ npm install
 
 1. **Créez un fichier .env à la racine du projet**
 
+```bash
 JWT_SECRET=RANDOM_TOKEN_SECRET
 JWT_EXPIRATION=24h
 BCRYPT_SALT_ROUNDS=10
 DB_USER=gchariot
 DB_PASSWORD=BkVCTVeYl40E0jXh
 DB_CLUSTER=cluster0.3e1lccc.mongodb.net
+```
 
 2. **Lancer le serveur**
 
